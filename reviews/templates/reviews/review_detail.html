@@ -1,0 +1,29 @@
+
+{% extends "reviews/base2.html" %}
+
+{% block content %}
+
+
+<h2>{{ car.name }}</h2>
+<h5>{{ car.review_set.count }} reviews ({{ car.average_rating | floatformat }} average rating)</h5>
+
+
+<h3>Recent reviews</h3>
+
+{% if car.review_set.all %}
+<div>
+    {% for review in car.review_set.all %}
+    <div>
+        <em>{{ review.comment }}</em>
+        <h6>Rated {{ review.rating }} of 5 by {{ review.user_name }}</h6>
+        <h5><a href="{% url 'reviews:review_detail' review.id %}">
+        Read more
+        </a></h5>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No reviews for this car yet</p>
+{% endif %}
+
+{% endblock %}

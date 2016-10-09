@@ -1,0 +1,31 @@
+<h2>{{ car.company }}</h2>
+<h3>{{ car.name }}</h3>
+<h4>{{ car.description }}</h4>
+
+
+<h3>Recent reviews</h3>
+
+{% if car.review_set.all %}
+<div>
+    {% for review in car.review_set.all %}
+    <div>
+        <em>{{ review.comment }}</em>
+        <h6>Rated {{ review.rating }} of 5 by {{ review.user_name }}</h6>
+        <h5><a href="{% url 'reviews:review_detail' review.id %}">
+        Read more
+        </a></h5>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No reviews for this car yet</p>
+{% endif %}
+
+<h3>Add your review</h3>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'reviews:add_review' car.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add" />
+</form>
